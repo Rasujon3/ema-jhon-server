@@ -17,13 +17,15 @@ const port = 5000
 
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 client.connect(err => {
-    const products = client.db("emaJohnStore").collection("products");
+    const productsCollection = client.db("emaJohnStore").collection("products");
 
     app.post('/addProduct',(req,res)=>{
-        const product = req.body;
-        products.insertOne(product)
+        const products = req.body;
+        console.log(products)
+        productsCollection.insertMany(products)
             .then(result => {
-                console.log(result);
+                console.log(result.insertedCount);
+                res.send(result.insertedCount);
             })
     })
 });
